@@ -29,25 +29,28 @@ export const EcoPulseQuiz = () => {
   };
 
   const handleAnswer = async (score) => {
-    const newAnswers = { ...answers, [currentQuestion]: score };
-    setAnswers(newAnswers);
-    
-    if (currentQuestion < quizQuestions.length - 1) {
-      setCurrentQuestion(currentQuestion + 1);
-    } else {
-      setLoading(true);
-      const finalScore = Object.values(newAnswers).reduce((a, b) => a + b, 0);
-      const stats = await simulateBackend(finalScore);
-      setQuizStats(stats);
-      setShowResults(true);
-      setLoading(false);
+    try {
+      const newAnswers = { ...answers, [currentQuestion]: score };
+      setAnswers(newAnswers);
+      
+      if (currentQuestion < quizQuestions.length - 1) {
+        setCurrentQuestion(currentQuestion + 1);
+      } else {
+        setLoading(true);
+        const finalScore = Object.values(newAnswers).reduce((a, b) => a + b, 0);
+        const stats = await simulateBackend(finalScore);
+        setQuizStats(stats);
+        setShowResults(true);
+        setLoading(false);
+      }
+    } catch (error) {
+      console.error('Error calculating results:', error);
+      setLoading(false); // Make sure to turn off loading state if there's an error
+      // Optionally show an error message to the user
     }
   };
 
-  if (showIntro) {
-    return <IntroScreen onStart={startQuiz} setName={setName} />;
-  }
-
+  // Add error handling for loading state
   if (loading) {
     return (
       <Card className="w-full max-w-2xl mx-auto">
@@ -88,6 +91,10 @@ export const EcoPulseQuiz = () => {
         }}
       />
     );
+  }
+
+  if (showIntro) {
+    return <IntroScreen onStart={startQuiz} setName={setName} />;
   }
 
   return (
