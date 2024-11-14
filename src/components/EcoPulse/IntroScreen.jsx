@@ -1,31 +1,35 @@
+// components/EcoPulse/IntroScreen.jsx
 import React from 'react';
 import { Card, CardContent } from '../ui/card';
-import { Button } from '../ui/button';
-import { Input } from '../ui/input';
-import { Leaf, ArrowRight } from 'lucide-react';
 
-export const IntroScreen = ({ onStart, setName }) => (
-  <Card className="w-full max-w-2xl mx-auto">
-    <CardContent className="p-8 text-center">
-      <Leaf className="w-16 h-16 mx-auto mb-6 text-green-500" />
-      <h1 className="text-3xl font-bold mb-4">Welcome to EcoPulse</h1>
-      <p className="text-lg mb-8">Discover your sustainability score and join our eco-friendly community!</p>
-      
-      <div className="space-y-6 max-w-md mx-auto">
-        <Input 
-          placeholder="Enter your name"
-          onChange={(e) => setName(e.target.value)}
-          className="text-center"
-          required
-        />
-        <Button 
-          onClick={onStart}
-          className="w-full"
-          size="lg"
-        >
-          Start Quiz <ArrowRight className="ml-2 w-4 h-4" />
-        </Button>
-      </div>
-    </CardContent>
-  </Card>
-);
+export const IntroScreen = ({ onStart, setName }) => {
+  return (
+    <Card className="w-full max-w-2xl mx-auto">
+      <CardContent className="p-6">
+        <h1 className="text-2xl font-bold mb-4">Welcome to EcoPulse</h1>
+        <p className="text-gray-600 mb-6">
+          Discover your environmental impact and learn how to make a difference.
+        </p>
+        
+        <div className="space-y-4">
+          <input
+            type="text"
+            placeholder="Enter your name"
+            onChange={(e) => setName(e.target.value)}
+            className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500"
+          />
+          
+          <button
+            onClick={onStart}
+            className="w-full bg-green-500 text-white py-3 px-6 rounded-lg
+                     hover:bg-green-600 transition-colors duration-200
+                     focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-opacity-50"
+          >
+            Start Quiz
+          </button>
+        </div>
+      </CardContent>
+    </Card>
+  );
+};
+
