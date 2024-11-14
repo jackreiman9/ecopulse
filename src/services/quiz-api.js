@@ -1,3 +1,8 @@
+const calculatePercentile = (score, allScores) => {
+  const below = allScores.filter(s => s < score).length;
+  return Math.round((below / allScores.length) * 100);
+};
+
 export const simulateBackend = async (score) => {
   await new Promise(resolve => setTimeout(resolve, 500));
   
