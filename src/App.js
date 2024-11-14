@@ -1,7 +1,7 @@
 // src/App.js
 import React from 'react';
 import './styles/globals.css';  // Add this import
-import { EcoPulseQuiz } from './components/EcoPulse';
+import { EcoPulseQuiz } from './components/EcoPulse/EcoPulseQuiz';
 
 function App() {
   return (
