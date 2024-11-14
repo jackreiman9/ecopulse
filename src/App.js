@@ -1,11 +1,14 @@
+// src/App.js
 import React from 'react';
-import EcoPulseQuiz from './components/EcoPulse/EcoPulseQuiz';
-import './App.css';
+import './styles/globals.css';  // Add this import
+import { EcoPulseQuiz } from './components/EcoPulse';
 
 function App() {
   return (
     <div className="min-h-screen bg-gray-50 p-4">
-      <EcoPulseQuiz />
+      <div className="container mx-auto py-8">
+        <EcoPulseQuiz />
+      </div>
     </div>
   );
 }
