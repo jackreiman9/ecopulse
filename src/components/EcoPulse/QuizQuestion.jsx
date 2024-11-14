@@ -1,7 +1,7 @@
 import React from 'react';
-import { Card, CardHeader, CardContent, CardTitle } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
-import { Progress } from '@/components/ui/progress';
+import { Card, CardHeader, CardContent, CardTitle } from '../ui/card';
+import { Button } from '../ui/button';
+import { Progress } from '../ui/progress';
 
 export const QuizQuestion = ({ 
   question, 
