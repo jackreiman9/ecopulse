@@ -1,20 +1,32 @@
+
+
+export const simulateBackend = async (score) => {
+  try {
+    // Simulate some delay
+    await new Promise(resolve => setTimeout(resolve, 1500));
+
+    // Simulate a distribution of scores
+    const simulatedScores = Array.from({ length: 1000 }, () => 
+      Math.floor(Math.random() * 40) - 20  // Adjust range to match new scoring (-20 to +20)
+    );
+
+    return {
+      percentile: calculatePercentile(score, simulatedScores),
+      totalParticipants: simulatedScores.length + 1,
+      averageScore: Math.round(simulatedScores.reduce((a, b) => a + b, 0) / simulatedScores.length)
+    };
+  } catch (error) {
+    console.error('Error in simulateBackend:', error);
+    // Return default values if simulation fails
+    return {
+      percentile: 50,
+      totalParticipants: 1000,
+      averageScore: 0
+    };
+  }
+};
+
 const calculatePercentile = (score, allScores) => {
   const below = allScores.filter(s => s < score).length;
   return Math.round((below / allScores.length) * 100);
-};
-
-export const simulateBackend = async (score) => {
-  await new Promise(resolve => setTimeout(resolve, 500));
-  
-  const percentile = calculatePercentile(score);
-  
-  const leaderboard = [
-    { name: "Sarah K.", score: Math.max(score + 15, 85) },
-    { name: "Michael R.", score: Math.max(score + 10, 82) },
-    { name: "Emma T.", score: Math.max(score + 5, 78) },
-    { name: "David L.", score: Math.max(score + 2, 75) },
-    { name: "Lisa M.", score: Math.max(score - 2, 72) }
-  ].sort((a, b) => b.score - a.score);
-
-  return { percentile, leaderboard };
 };
