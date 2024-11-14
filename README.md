@@ -2,6 +2,7 @@
 
 A sustainability quiz application that helps users understand and improve their environmental impact.
 
+
 ## Installation
 
 ```bash
