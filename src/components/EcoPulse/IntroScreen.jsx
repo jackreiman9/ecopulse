@@ -7,28 +7,28 @@ export const IntroScreen = ({ onStart, setName }) => {
 
   const quizzes = [
     {
-      id: 'home',
-      title: 'Home Energy',
+      id: 'food',
+      title: 'Food',
       description: 'Evaluate your household energy consumption',
-      icon: '🏠'
+      icon: '🌱'
     },
     {
-      id: 'transport',
+      id: 'transportation',
       title: 'Transportation',
       description: 'Assess your travel and commuting habits',
       icon: '🚗'
     },
     {
-      id: 'consumption',
-      title: 'Consumption',
+      id: 'waste',
+      title: 'Waste',
       description: 'Review your purchasing and waste patterns',
-      icon: '🛒'
+      icon: '🗑️'
     },
     {
-      id: 'lifestyle',
-      title: 'Lifestyle',
-      description: 'Examine your daily environmental choices',
-      icon: '🌱'
+      id: 'consumer',
+      title: 'Consumer/Retail',
+      description: 'Examine your daily shopping choices',
+      icon: '🛒'
     }
   ];
 
