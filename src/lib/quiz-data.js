@@ -113,7 +113,7 @@ export const quizQuestions = [
   {
     id: 9,
     question: "How often do you take public transportation?",
-    category: "transportation.options",
+    category: "transportation.choice",
     options: [
       { text: "Always", score: 2 },
       { text: "Frequently", score: 1 },
@@ -127,7 +127,7 @@ export const quizQuestions = [
   {
     id: 10,
     question: "How often do you bike instead of taking a car?",
-    category: "transportation.options",
+    category: "transportation.choice",
     options: [
       { text: "Always", score: 2 },
       { text: "Frequently", score: 1 },
