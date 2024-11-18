@@ -205,13 +205,13 @@ export const quizQuestions = [
 export const tiers = [
   {
     name: "Eco Champion",
-    minScore: 25,
+    minScore: 20,
     color: "bg-emerald-500",
     description: "You're a sustainability superstar! Your choices significantly reduce food waste and environmental impact in urban living."
   },
   {
     name: "Green Warrior",
-    minScore: 16,
+    minScore: 10,
     color: "bg-green-500",
     description: "Great work! You're making conscious choices for sustainable urban living with room for improvement."
   },
@@ -223,13 +223,13 @@ export const tiers = [
   },
   {
     name: "Beginning Explorer",
-    minScore: -16,
+    minScore: -10,
     color: "bg-orange-500",
     description: "Starting your sustainability journey! Focus on food waste reduction and energy conservation."
   },
   {
     name: "Sustainability Starter",
-    minScore: -32,
+    minScore: -20,
     color: "bg-red-500",
     description: "Everyone starts somewhere! Let's work on developing more sustainable habits in your urban lifestyle."
   }
