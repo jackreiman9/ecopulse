@@ -1,12 +1,13 @@
+// components/EcoPulse/ResultsScreen.jsx
 import React from 'react';
 import { Card, CardContent } from '../ui/card';
 import { Button } from '../ui/button';
 import { Input } from '../ui/input';
-import { Trophy, Leaf } from 'lucide-react';
+import { Trophy, Leaf, ChevronRight } from 'lucide-react';
 import { TierVisualization } from './TierVisualization';
 import { Leaderboard } from './Leaderboard';
-import { getRecommendations } from '../../utils/quiz-helpers';
-import { tiers } from '../../lib/quiz-data';
+import { getRecommendations, getCategoryTotals } from '../../lib/quiz-helpers';
+import { tiers, quizQuestions } from '../../lib/quiz-data';
 
 export const ResultsScreen = ({
   name,
@@ -19,6 +20,14 @@ export const ResultsScreen = ({
 }) => {
   const currentTier = tiers.find(tier => score >= tier.minScore) || tiers[tiers.length - 1];
   const recommendations = getRecommendations(answers);
+  const categoryScores = getCategoryTotals(answers, quizQuestions);
+
+  const categoryIcons = {
+    food: '🌱',
+    transportation: '🚗',
+    packaging: '🗑️',
+    clothing: '🛒'
+  };
 
   return (
     <Card className="w-full max-w-2xl mx-auto">
@@ -35,6 +44,32 @@ export const ResultsScreen = ({
               You scored better than {quizStats.percentile}% of other users!
             </p>
           )}
+        </div>
+
+        {/* Category Breakdown */}
+        <div className="mb-8">
+          <h3 className="text-xl font-bold mb-4">Category Breakdown</h3>
+          <div className="space-y-3">
+            {Object.entries(categoryScores).map(([category, categoryScore]) => (
+              <div 
+                key={category}
+                className="p-4 border rounded-lg flex items-center justify-between"
+              >
+                <div className="flex items-center gap-3">
+                  <span className="text-2xl">{categoryIcons[category]}</span>
+                  <div>
+                    <p className="font-semibold capitalize">
+                      {category}
+                    </p>
+                    <p className="text-sm text-gray-600">
+                      Score: {categoryScore}
+                    </p>
+                  </div>
+                </div>
+                <ChevronRight className="text-gray-400" />
+              </div>
+            ))}
+          </div>
         </div>
 
         <TierVisualization score={score} />
