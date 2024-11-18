@@ -6,6 +6,12 @@ export const calculatePercentile = (score) => {
   return Math.round((belowScore / mockScores.length) * 100);
 };
 
+const formatCategoryForDisplay = (category) => {
+  // Convert "category.subcategory" to "category subcategory"
+  return category.replace('.', ' ');
+};
+
+
 export const getRecommendations = (answers) => {
   const impactAreas = [];
   
@@ -29,11 +35,11 @@ export const getRecommendations = (answers) => {
     .map(area => {
       switch(area.impact) {
         case 'high':
-          return `High Impact: Consider improving your ${area.area.toLowerCase()} habits.`;
+          return `High Impact: Consider improving your ${area.category.toLowerCase()} habits.`;
         case 'medium':
-          return `Medium Impact: Work on ${area.area.toLowerCase()}.`;
+          return `Medium Impact: Work on ${area.category.toLowerCase()}.`;
         case 'low':
-          return `Quick Win: Enhance your ${area.area.toLowerCase()}.`;
+          return `Quick Win: Enhance your ${area.category.toLowerCase()}.`;
         default:
           return '';
       }
