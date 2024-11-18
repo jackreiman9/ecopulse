@@ -1,4 +1,3 @@
-// components/EcoPulse/ResultsScreen.jsx
 import React from 'react';
 import { Card, CardContent } from '../ui/card';
 import { Button } from '../ui/button';
@@ -17,6 +16,7 @@ export const ResultsScreen = ({
   setEmail,
   quizStats,
   onSubmit,
+  onRetakeQuiz, // new prop for handling navigation
 }) => {
   const currentTier = tiers.find(tier => score >= tier.minScore) || tiers[tiers.length - 1];
   const recommendations = getRecommendations(answers);
@@ -46,18 +46,20 @@ export const ResultsScreen = ({
           )}
         </div>
 
-        {/* Category Breakdown */}
+        {/* Category Breakdown - Now Clickable */}
         <div className="mb-8">
           <h3 className="text-xl font-bold mb-4">Category Breakdown</h3>
           <div className="space-y-3">
             {Object.entries(categoryScores).map(([category, categoryScore]) => (
-              <div 
+              <button
                 key={category}
-                className="p-4 border rounded-lg flex items-center justify-between"
+                onClick={() => onRetakeQuiz(category)}
+                className="w-full p-4 border rounded-lg flex items-center justify-between
+                         hover:bg-green-50 hover:border-green-500 transition-colors"
               >
                 <div className="flex items-center gap-3">
                   <span className="text-2xl">{categoryIcons[category]}</span>
-                  <div>
+                  <div className="text-left">
                     <p className="font-semibold capitalize">
                       {category}
                     </p>
@@ -66,10 +68,21 @@ export const ResultsScreen = ({
                     </p>
                   </div>
                 </div>
-                <ChevronRight className="text-gray-400" />
-              </div>
+                <div className="flex items-center text-green-600">
+                  <span className="mr-2">Take Quiz</span>
+                  <ChevronRight size={20} />
+                </div>
+              </button>
             ))}
           </div>
+          
+          {/* Add a button to return to all categories */}
+          <Button
+            onClick={() => onRetakeQuiz(null)}
+            className="w-full mt-4 bg-green-100 text-green-700 hover:bg-green-200"
+          >
+            View All Categories
+          </Button>
         </div>
 
         <TierVisualization score={score} />
