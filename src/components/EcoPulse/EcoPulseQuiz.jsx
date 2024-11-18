@@ -39,28 +39,29 @@ export const EcoPulseQuiz = () => {
     return Object.values(answers).reduce((a, b) => a + b, 0);
   };
 
-  const handleAnswer = async (score) => {
-    try {
-      const newAnswers = { ...answers, [currentQuestion]: score };
-      setAnswers(newAnswers);
-      
-      const currentQuestions = getCurrentQuestions();
-      
-      if (currentQuestion < currentQuestions.length - 1) {
-        setCurrentQuestion(currentQuestion + 1);
-      } else {
-        setLoading(true);
-        const finalScore = Object.values(newAnswers).reduce((a, b) => a + b, 0);
-        const stats = await simulateBackend(finalScore);
-        setQuizStats(stats);
-        setShowResults(true);
-        setLoading(false);
-      }
-    } catch (error) {
-      console.error('Error calculating results:', error);
+ const handleAnswer = async (score) => {
+  try {
+    const currentQuestions = getCurrentQuestions();
+    // Use the actual question ID instead of currentQuestion index
+    const questionId = currentQuestions[currentQuestion].id - 1;
+    const newAnswers = { ...answers, [questionId]: score };
+    setAnswers(newAnswers);
+    
+    if (currentQuestion < currentQuestions.length - 1) {
+      setCurrentQuestion(currentQuestion + 1);
+    } else {
+      setLoading(true);
+      const finalScore = Object.values(newAnswers).reduce((a, b) => a + b, 0);
+      const stats = await simulateBackend(finalScore);
+      setQuizStats(stats);
+      setShowResults(true);
       setLoading(false);
     }
-  };
+  } catch (error) {
+    console.error('Error calculating results:', error);
+    setLoading(false);
+  }
+};
 
   if (loading) {
     return (
