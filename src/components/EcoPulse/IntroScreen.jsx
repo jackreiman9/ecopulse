@@ -19,13 +19,13 @@ export const IntroScreen = ({ onStart, setName }) => {
       icon: '🚗'
     },
     {
-      id: 'waste',
+      id: 'packaging',
       title: 'Waste',
       description: 'Review your purchasing and waste patterns',
       icon: '🗑️'
     },
     {
-      id: 'consumer',
+      id: 'clothing',
       title: 'Consumer/Retail',
       description: 'Examine your daily shopping choices',
       icon: '🛒'
