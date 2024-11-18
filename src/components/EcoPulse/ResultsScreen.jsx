@@ -6,7 +6,7 @@ import { Input } from '../ui/input';
 import { Trophy, Leaf, ChevronRight } from 'lucide-react';
 import { TierVisualization } from './TierVisualization';
 import { Leaderboard } from './Leaderboard';
-import { getRecommendations, getCategoryTotals } from '../../lib/quiz-helpers';
+import { getRecommendations, getCategoryTotals } from '../../utils/quiz-helpers';
 import { tiers, quizQuestions } from '../../lib/quiz-data';
 
 export const ResultsScreen = ({
