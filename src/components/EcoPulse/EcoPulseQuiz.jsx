@@ -40,10 +40,11 @@ export const EcoPulseQuiz = () => {
 
   const handleAnswer = async (score) => {
     try {
-      const newAnswers = { ...answers, [currentQuestion]: score };
-      setAnswers(newAnswers);
-      
       const currentQuestions = getCurrentQuestions();
+      // Store answer using the actual question's ID
+      const questionId = currentQuestions[currentQuestion].id;
+      const newAnswers = { ...answers, [questionId - 1]: score };
+      setAnswers(newAnswers);
       
       if (currentQuestion < currentQuestions.length - 1) {
         setCurrentQuestion(currentQuestion + 1);
