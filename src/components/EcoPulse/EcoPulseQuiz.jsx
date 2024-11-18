@@ -6,7 +6,7 @@ import { QuizQuestion } from './QuizQuestion';
 import { ResultsScreen } from './ResultsScreen';
 import { quizQuestions } from '../../lib/quiz-data';
 import { simulateBackend } from '../../services/quiz-api';
-import { handleRetakeQuiz } from '../../utils/quiz-handlers';
+import { handleRetakeQuiz } from '../../utils/quiz-helpers';
 
 export const EcoPulseQuiz = () => {
   const [showIntro, setShowIntro] = useState(true);
