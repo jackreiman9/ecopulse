@@ -7,12 +7,10 @@ export const calculatePercentile = (score) => {
 };
 
 const formatCategoryForDisplay = (category) => {
-  // Convert "category.subcategory" to "Category Subcategory"
-  return category
-    .split('.')
-    .map(word => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
-    .join(' ');
+  // Convert "category.subcategory" to "category subcategory"
+  return category.replace('.', ' ');
 };
+
 
 export const getRecommendations = (answers) => {
   const impactAreas = [];
@@ -21,22 +19,14 @@ export const getRecommendations = (answers) => {
     if (score < 0) {
       const question = quizQuestions[questionIndex];
       impactAreas.push({
-        area: formatCategoryForDisplay(question.category),
+        area: question.category,
         impact: question.impact,
         score: score
       });
     }
   });
   
-  // Group by category and take the lowest score for each
-  const categoryMap = new Map();
-  impactAreas.forEach(item => {
-    if (!categoryMap.has(item.area) || item.score < categoryMap.get(item.area).score) {
-      categoryMap.set(item.area, item);
-    }
-  });
-  
-  return Array.from(categoryMap.values())
+  return impactAreas
     .sort((a, b) => {
       const impactOrder = { high: 3, medium: 2, low: 1 };
       return impactOrder[b.impact] - impactOrder[a.impact] || a.score - b.score;
@@ -45,11 +35,11 @@ export const getRecommendations = (answers) => {
     .map(area => {
       switch(area.impact) {
         case 'high':
-          return `High Impact: Consider improving your ${area.area} practices.`;
+          return `High Impact: Consider improving your ${area.area.toLowerCase()} habits.`;
         case 'medium':
-          return `Medium Impact: Work on your ${area.area} approach.`;
+          return `Medium Impact: Work on ${area.area.toLowerCase()}.`;
         case 'low':
-          return `Quick Win: Enhance your ${area.area} methods.`;
+          return `Quick Win: Enhance your ${area.area.toLowerCase()}.`;
         default:
           return '';
       }
