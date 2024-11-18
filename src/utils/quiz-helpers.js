@@ -50,7 +50,7 @@ export const getCategoryScore = (answers, questions, category) => {
 
 // Update getCategoryTotals to use proper category names for display
 export const getCategoryTotals = (answers, questions) => {
-  const displayCategories = ['food', 'transportation', 'waste', 'consumer'];
+  const displayCategories = ['food', 'transportation', 'packaging', 'clothing'];
   
   return displayCategories.reduce((acc, category) => {
     acc[category] = getCategoryScore(answers, questions, category);
