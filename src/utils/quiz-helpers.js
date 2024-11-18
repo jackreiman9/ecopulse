@@ -19,7 +19,7 @@ export const getRecommendations = (answers) => {
     if (score < 0) {
       const question = quizQuestions[questionIndex];
       impactAreas.push({
-        area: question.question,
+        area: question.category,
         impact: question.impact,
         score: score
       });
@@ -37,9 +37,9 @@ export const getRecommendations = (answers) => {
         case 'high':
           return `High Impact: Consider improving your ${area.category.toLowerCase()} habits.`;
         case 'medium':
-          return `Medium Impact: Work on ${area.category.toLowerCase()}.`;
+          return `Medium Impact: Work on ${area.area.toLowerCase()}.`;
         case 'low':
-          return `Quick Win: Enhance your ${area.category.toLowerCase()}.`;
+          return `Quick Win: Enhance your ${area.area.toLowerCase()}.`;
         default:
           return '';
       }
