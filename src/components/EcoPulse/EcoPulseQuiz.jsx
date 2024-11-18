@@ -1,4 +1,3 @@
-// components/EcoPulse/EcoPulseQuiz.jsx
 import React, { useState } from 'react';
 import { Card, CardContent } from '../ui/card';
 import { Trophy } from 'lucide-react';
@@ -7,6 +6,7 @@ import { QuizQuestion } from './QuizQuestion';
 import { ResultsScreen } from './ResultsScreen';
 import { quizQuestions } from '../../lib/quiz-data';
 import { simulateBackend } from '../../services/quiz-api';
+import { handleRetakeQuiz } from '../../utils/quiz-handlers';
 
 export const EcoPulseQuiz = () => {
   const [showIntro, setShowIntro] = useState(true);
@@ -27,7 +27,6 @@ export const EcoPulseQuiz = () => {
     }
   };
 
-  // Filter questions based on selected quiz type
   const getCurrentQuestions = () => {
     if (!selectedQuiz) return quizQuestions;
     return quizQuestions.filter(question => 
@@ -39,29 +38,28 @@ export const EcoPulseQuiz = () => {
     return Object.values(answers).reduce((a, b) => a + b, 0);
   };
 
- const handleAnswer = async (score) => {
-  try {
-    const currentQuestions = getCurrentQuestions();
-    // Use the actual question ID instead of currentQuestion index
-    const questionId = currentQuestions[currentQuestion].id - 1;
-    const newAnswers = { ...answers, [questionId]: score };
-    setAnswers(newAnswers);
-    
-    if (currentQuestion < currentQuestions.length - 1) {
-      setCurrentQuestion(currentQuestion + 1);
-    } else {
-      setLoading(true);
-      const finalScore = Object.values(newAnswers).reduce((a, b) => a + b, 0);
-      const stats = await simulateBackend(finalScore);
-      setQuizStats(stats);
-      setShowResults(true);
+  const handleAnswer = async (score) => {
+    try {
+      const newAnswers = { ...answers, [currentQuestion]: score };
+      setAnswers(newAnswers);
+      
+      const currentQuestions = getCurrentQuestions();
+      
+      if (currentQuestion < currentQuestions.length - 1) {
+        setCurrentQuestion(currentQuestion + 1);
+      } else {
+        setLoading(true);
+        const finalScore = Object.values(newAnswers).reduce((a, b) => a + b, 0);
+        const stats = await simulateBackend(finalScore);
+        setQuizStats(stats);
+        setShowResults(true);
+        setLoading(false);
+      }
+    } catch (error) {
+      console.error('Error calculating results:', error);
       setLoading(false);
     }
-  } catch (error) {
-    console.error('Error calculating results:', error);
-    setLoading(false);
-  }
-};
+  };
 
   if (loading) {
     return (
@@ -101,6 +99,14 @@ export const EcoPulseQuiz = () => {
           e.preventDefault();
           setSubmitted(true);
         }}
+        onRetakeQuiz={(category) => handleRetakeQuiz(
+          setShowResults,
+          setShowIntro,
+          setCurrentQuestion,
+          setAnswers,
+          startQuiz,
+          category
+        )}
       />
     );
   }
