@@ -13,7 +13,7 @@ export const TierVisualization = ({ score }) => (
       >
         <div className="flex justify-between items-center">
           <span className="font-bold">{tier.name}</span>
-          <span>{tier.minScore}+ points</span>
+          <span>{tier.minScore} points</span>
         </div>
         <p className="text-sm mt-1">{tier.description}</p>
       </div>
