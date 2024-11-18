@@ -87,7 +87,7 @@ export const EcoPulseQuiz = () => {
     );
   }
 
-  if (showResults) {
+if (showResults) {
     return (
       <ResultsScreen
         name={name}
@@ -106,7 +106,9 @@ export const EcoPulseQuiz = () => {
           setCurrentQuestion,
           setAnswers,
           startQuiz,
-          category
+          category,
+          answers,         // Pass current answers
+          quizQuestions    // Pass questions for filtering
         )}
       />
     );
