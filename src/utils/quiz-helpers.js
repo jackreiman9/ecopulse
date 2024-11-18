@@ -1,13 +1,78 @@
 import { quizQuestions } from '../lib/quiz-data';
 
+export const handleRetakeQuiz = (
+  setShowResults,
+  setShowIntro,
+  setCurrentQuestion,
+  setAnswers,
+  startQuiz,
+  category,
+  answers,
+  quizQuestions
+) => {
+  if (category) {
+    // Clear only answers from the selected category
+    const newAnswers = { ...answers };
+    quizQuestions.forEach(question => {
+      if (question.category.split('.')[0] === category) {
+        delete newAnswers[question.id - 1];
+      }
+    });
+    setAnswers(newAnswers);
+    startQuiz(category);
+  }
+  setShowResults(false);
+  setShowIntro(category ? false : true);
+  setCurrentQuestion(0);
+};
+
+// Add this near the top of your quiz-helpers.js file
+const categoryMapping = {
+  food: 'food',
+  transportation: 'transportation',
+  waste: 'packaging', // Map 'waste' selection to 'packaging' questions
+  consumer: 'clothing'  // Map 'consumer' selection to 'clothing' questions
+};
+
+export const getMainCategory = (category) => {
+  const mainCategory = category.split('.')[0];
+  // Return the mapped category if it exists, otherwise return the original
+  return categoryMapping[mainCategory] || mainCategory;
+};
+
+// Update getCategoryScore to use the mapping
+export const getCategoryScore = (answers, questions, category) => {
+  const mappedCategory = categoryMapping[category] || category;
+  const categoryQuestions = getQuestionsByCategory(questions, mappedCategory);
+  const categoryScores = categoryQuestions.map(q => answers[q.id - 1] || 0);
+  return categoryScores.reduce((a, b) => a + b, 0);
+};
+
+// Update getCategoryTotals to use proper category names for display
+export const getCategoryTotals = (answers, questions) => {
+  const displayCategories = ['food', 'transportation', 'packaging', 'clothing'];
+  
+  return displayCategories.reduce((acc, category) => {
+    acc[category] = getCategoryScore(answers, questions, category);
+    return acc;
+  }, {});
+};
+
+// Rest of the file stays the same...
 export const calculatePercentile = (score) => {
   const mockScores = [45, 48, 50, 52, 55, 58, 60, 62, 65, 68, 70, 72, 75, 78, 80, 82, 85];
   const belowScore = mockScores.filter(s => s < score).length;
   return Math.round((belowScore / mockScores.length) * 100);
 };
 
+export const getQuestionsByCategory = (questions, category) => {
+  return questions.filter(question => 
+    getMainCategory(question.category) === category
+  );
+};
+
+
 const formatCategoryForDisplay = (category) => {
-  // Convert "category.subcategory" to "category subcategory"
   return category.replace('.', ' ').toLowerCase();
 };
 
@@ -18,18 +83,21 @@ export const getRecommendations = (answers) => {
     if (score < 0) {
       const question = quizQuestions[questionIndex];
       impactAreas.push({
-        area: formatCategoryForDisplay(question.category),
+        area: question.category,
         impact: question.impact,
         score: score
       });
     }
   });
   
-  // Group by category and take the lowest score for each
   const categoryMap = new Map();
   impactAreas.forEach(item => {
-    if (!categoryMap.has(item.area) || item.score < categoryMap.get(item.area).score) {
-      categoryMap.set(item.area, item);
+    const formattedArea = formatCategoryForDisplay(item.area);
+    if (!categoryMap.has(formattedArea) || item.score < categoryMap.get(formattedArea).score) {
+      categoryMap.set(formattedArea, {
+        ...item,
+        area: formattedArea
+      });
     }
   });
   

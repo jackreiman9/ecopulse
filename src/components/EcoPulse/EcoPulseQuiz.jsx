@@ -6,6 +6,7 @@ import { QuizQuestion } from './QuizQuestion';
 import { ResultsScreen } from './ResultsScreen';
 import { quizQuestions } from '../../lib/quiz-data';
 import { simulateBackend } from '../../services/quiz-api';
+import { handleRetakeQuiz } from '../../utils/quiz-helpers';
 
 export const EcoPulseQuiz = () => {
   const [showIntro, setShowIntro] = useState(true);
@@ -17,11 +18,20 @@ export const EcoPulseQuiz = () => {
   const [submitted, setSubmitted] = useState(false);
   const [loading, setLoading] = useState(false);
   const [quizStats, setQuizStats] = useState(null);
+  const [selectedQuiz, setSelectedQuiz] = useState(null);
 
-  const startQuiz = () => {
+  const startQuiz = (quizType) => {
     if (name.trim()) {
+      setSelectedQuiz(quizType);
       setShowIntro(false);
     }
+  };
+
+  const getCurrentQuestions = () => {
+    if (!selectedQuiz) return quizQuestions;
+    return quizQuestions.filter(question => 
+      question.category.split('.')[0] === selectedQuiz
+    );
   };
 
   const calculateScore = () => {
@@ -30,10 +40,13 @@ export const EcoPulseQuiz = () => {
 
   const handleAnswer = async (score) => {
     try {
-      const newAnswers = { ...answers, [currentQuestion]: score };
+      const currentQuestions = getCurrentQuestions();
+      // Store answer using the actual question's ID
+      const questionId = currentQuestions[currentQuestion].id;
+      const newAnswers = { ...answers, [questionId - 1]: score };
       setAnswers(newAnswers);
       
-      if (currentQuestion < quizQuestions.length - 1) {
+      if (currentQuestion < currentQuestions.length - 1) {
         setCurrentQuestion(currentQuestion + 1);
       } else {
         setLoading(true);
@@ -45,12 +58,10 @@ export const EcoPulseQuiz = () => {
       }
     } catch (error) {
       console.error('Error calculating results:', error);
-      setLoading(false); // Make sure to turn off loading state if there's an error
-      // Optionally show an error message to the user
+      setLoading(false);
     }
   };
 
-  // Add error handling for loading state
   if (loading) {
     return (
       <Card className="w-full max-w-2xl mx-auto">
@@ -76,7 +87,7 @@ export const EcoPulseQuiz = () => {
     );
   }
 
-  if (showResults) {
+if (showResults) {
     return (
       <ResultsScreen
         name={name}
@@ -89,20 +100,39 @@ export const EcoPulseQuiz = () => {
           e.preventDefault();
           setSubmitted(true);
         }}
+        onRetakeQuiz={(category) => handleRetakeQuiz(
+          setShowResults,
+          setShowIntro,
+          setCurrentQuestion,
+          setAnswers,
+          startQuiz,
+          category,
+          answers,         // Pass current answers
+          quizQuestions    // Pass questions for filtering
+        )}
       />
     );
   }
 
   if (showIntro) {
-    return <IntroScreen onStart={startQuiz} setName={setName} />;
+    return <IntroScreen 
+      onStart={startQuiz} 
+      setName={setName}
+    />;
   }
 
+  const currentQuestions = getCurrentQuestions();
   return (
     <QuizQuestion
-      question={quizQuestions[currentQuestion]}
+      question={currentQuestions[currentQuestion]}
       currentQuestion={currentQuestion}
-      totalQuestions={quizQuestions.length}
+      totalQuestions={currentQuestions.length}
       onAnswer={handleAnswer}
+      onBack={() => {
+        setShowIntro(true);
+        setSelectedQuiz(null);
+        setCurrentQuestion(0);
+      }}
     />
   );
 };

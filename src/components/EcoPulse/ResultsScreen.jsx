@@ -2,11 +2,11 @@ import React from 'react';
 import { Card, CardContent } from '../ui/card';
 import { Button } from '../ui/button';
 import { Input } from '../ui/input';
-import { Trophy, Leaf } from 'lucide-react';
+import { Trophy, Leaf, ChevronRight } from 'lucide-react';
 import { TierVisualization } from './TierVisualization';
 import { Leaderboard } from './Leaderboard';
-import { getRecommendations } from '../../utils/quiz-helpers';
-import { tiers } from '../../lib/quiz-data';
+import { getRecommendations, getCategoryTotals } from '../../utils/quiz-helpers';
+import { tiers, quizQuestions } from '../../lib/quiz-data';
 
 export const ResultsScreen = ({
   name,
@@ -16,9 +16,25 @@ export const ResultsScreen = ({
   setEmail,
   quizStats,
   onSubmit,
+  onRetakeQuiz,
 }) => {
   const currentTier = tiers.find(tier => score >= tier.minScore) || tiers[tiers.length - 1];
   const recommendations = getRecommendations(answers);
+  const categoryScores = getCategoryTotals(answers, quizQuestions);
+
+  const categoryIcons = {
+    food: '🌱',
+    transportation: '🚗',
+    packaging: '🗑️',
+    clothing: '🛒'
+  };
+
+  const categoryDisplayNames = {
+    food: 'Food',
+    transportation: 'Transportation',
+    packaging: 'Waste',
+    clothing: 'Consumer/Retail'
+  };
 
   return (
     <Card className="w-full max-w-2xl mx-auto">
@@ -35,6 +51,43 @@ export const ResultsScreen = ({
               You scored better than {quizStats.percentile}% of other users!
             </p>
           )}
+        </div>
+
+        <div className="mb-8">
+          <h3 className="text-xl font-bold mb-4">Category Breakdown</h3>
+          <div className="space-y-3">
+            {Object.entries(categoryScores).map(([category, categoryScore]) => (
+              <button
+                key={category}
+                onClick={() => onRetakeQuiz(category)}
+                className="w-full p-4 border rounded-lg flex items-center justify-between
+                         hover:bg-green-50 hover:border-green-500 transition-colors"
+              >
+                <div className="flex items-center gap-3">
+                  <span className="text-2xl">{categoryIcons[category]}</span>
+                  <div className="text-left">
+                    <p className="font-semibold">
+                      {categoryDisplayNames[category]}
+                    </p>
+                    <p className="text-sm text-gray-600">
+                      Score: {categoryScore}
+                    </p>
+                  </div>
+                </div>
+                <div className="flex items-center text-green-600">
+                  <span className="mr-2">Take Quiz</span>
+                  <ChevronRight size={20} />
+                </div>
+              </button>
+            ))}
+          </div>
+          
+          <Button
+            onClick={() => onRetakeQuiz(null)}
+            className="w-full mt-4 bg-green-100 text-green-700 hover:bg-green-200"
+          >
+            View All Categories
+          </Button>
         </div>
 
         <TierVisualization score={score} />
