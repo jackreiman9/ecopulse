@@ -18,6 +18,39 @@ export const handleRetakeQuiz = (
   }
 };
 
+// Add this near the top of your quiz-helpers.js file
+const categoryMapping = {
+  food: 'food',
+  transportation: 'transportation',
+  waste: 'packaging', // Map 'waste' selection to 'packaging' questions
+  consumer: 'clothing'  // Map 'consumer' selection to 'clothing' questions
+};
+
+export const getMainCategory = (category) => {
+  const mainCategory = category.split('.')[0];
+  // Return the mapped category if it exists, otherwise return the original
+  return categoryMapping[mainCategory] || mainCategory;
+};
+
+// Update getCategoryScore to use the mapping
+export const getCategoryScore = (answers, questions, category) => {
+  const mappedCategory = categoryMapping[category] || category;
+  const categoryQuestions = getQuestionsByCategory(questions, mappedCategory);
+  const categoryScores = categoryQuestions.map(q => answers[q.id - 1] || 0);
+  return categoryScores.reduce((a, b) => a + b, 0);
+};
+
+// Update getCategoryTotals to use proper category names for display
+export const getCategoryTotals = (answers, questions) => {
+  const displayCategories = ['food', 'transportation', 'waste', 'consumer'];
+  
+  return displayCategories.reduce((acc, category) => {
+    acc[category] = getCategoryScore(answers, questions, category);
+    return acc;
+  }, {});
+};
+
+// Rest of the file stays the same...
 export const calculatePercentile = (score) => {
   const mockScores = [45, 48, 50, 52, 55, 58, 60, 62, 65, 68, 70, 72, 75, 78, 80, 82, 85];
   const belowScore = mockScores.filter(s => s < score).length;
