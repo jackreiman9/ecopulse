@@ -57,10 +57,6 @@ export const calculatePercentile = (score) => {
   return Math.round((belowScore / mockScores.length) * 100);
 };
 
-export const getMainCategory = (category) => {
-  return category.split('.')[0];
-};
-
 export const getQuestionsByCategory = (questions, category) => {
   return questions.filter(question => 
     getMainCategory(question.category) === category
