@@ -7,7 +7,7 @@ export const simulateBackend = async (score) => {
 
     // Simulate a distribution of scores
     const simulatedScores = Array.from({ length: 1000 }, () => 
-      Math.floor(Math.random() * 40) - 20  // Adjust range to match new scoring (-20 to +20)
+      Math.floor(Math.random() * 64) - 32  // Adjust range to match new scoring (-32 to +32)
     );
 
     return {
