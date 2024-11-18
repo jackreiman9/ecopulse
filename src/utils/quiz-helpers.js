@@ -63,20 +63,6 @@ export const getQuestionsByCategory = (questions, category) => {
   );
 };
 
-export const getCategoryScore = (answers, questions, category) => {
-  const categoryQuestions = getQuestionsByCategory(questions, category);
-  const categoryScores = categoryQuestions.map(q => answers[q.id - 1] || 0);
-  return categoryScores.reduce((a, b) => a + b, 0);
-};
-
-export const getCategoryTotals = (answers, questions) => {
-  const categories = [...new Set(questions.map(q => getMainCategory(q.category)))];
-  
-  return categories.reduce((acc, category) => {
-    acc[category] = getCategoryScore(answers, questions, category);
-    return acc;
-  }, {});
-};
 
 const formatCategoryForDisplay = (category) => {
   return category.replace('.', ' ').toLowerCase();
