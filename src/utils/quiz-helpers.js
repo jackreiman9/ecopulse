@@ -35,7 +35,7 @@ export const getRecommendations = (answers) => {
     .map(area => {
       switch(area.impact) {
         case 'high':
-          return `High Impact: Consider improving your ${area.category.toLowerCase()} habits.`;
+          return `High Impact: Consider improving your ${area.area.toLowerCase()} habits.`;
         case 'medium':
           return `Medium Impact: Work on ${area.area.toLowerCase()}.`;
         case 'low':
