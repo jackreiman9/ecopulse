@@ -5,28 +5,23 @@ export const calculatePercentile = (score) => {
   const belowScore = mockScores.filter(s => s < score).length;
   return Math.round((belowScore / mockScores.length) * 100);
 };
-// lib/quiz-helpers.js
 
-// Get main category from subcategory string
 export const getMainCategory = (category) => {
   return category.split('.')[0];
 };
 
-// Filter questions by category
 export const getQuestionsByCategory = (questions, category) => {
   return questions.filter(question => 
     getMainCategory(question.category) === category
   );
 };
 
-// Get category-specific score
 export const getCategoryScore = (answers, questions, category) => {
   const categoryQuestions = getQuestionsByCategory(questions, category);
   const categoryScores = categoryQuestions.map(q => answers[q.id - 1] || 0);
   return categoryScores.reduce((a, b) => a + b, 0);
 };
 
-// Get all category totals
 export const getCategoryTotals = (answers, questions) => {
   const categories = [...new Set(questions.map(q => getMainCategory(q.category)))];
   
@@ -37,7 +32,6 @@ export const getCategoryTotals = (answers, questions) => {
 };
 
 const formatCategoryForDisplay = (category) => {
-  // Convert "category.subcategory" to "category subcategory"
   return category.replace('.', ' ').toLowerCase();
 };
 
@@ -48,18 +42,21 @@ export const getRecommendations = (answers) => {
     if (score < 0) {
       const question = quizQuestions[questionIndex];
       impactAreas.push({
-        area: formatCategoryForDisplay(question.category),
+        area: question.category,
         impact: question.impact,
         score: score
       });
     }
   });
   
-  // Group by category and take the lowest score for each
   const categoryMap = new Map();
   impactAreas.forEach(item => {
-    if (!categoryMap.has(item.area) || item.score < categoryMap.get(item.area).score) {
-      categoryMap.set(item.area, item);
+    const formattedArea = formatCategoryForDisplay(item.area);
+    if (!categoryMap.has(formattedArea) || item.score < categoryMap.get(formattedArea).score) {
+      categoryMap.set(formattedArea, {
+        ...item,
+        area: formattedArea
+      });
     }
   });
   
