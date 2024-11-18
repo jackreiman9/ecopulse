@@ -1,4 +1,4 @@
-import { quizQuestions } from '../../lib/quiz-data';
+import { quizQuestions } from '../lib/quiz-data';
 
 export const calculatePercentile = (score) => {
   const mockScores = [45, 48, 50, 52, 55, 58, 60, 62, 65, 68, 70, 72, 75, 78, 80, 82, 85];
