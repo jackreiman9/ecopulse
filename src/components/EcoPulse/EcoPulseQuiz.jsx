@@ -1,3 +1,4 @@
+// components/EcoPulse/EcoPulseQuiz.jsx
 import React, { useState } from 'react';
 import { Card, CardContent } from '../ui/card';
 import { Trophy } from 'lucide-react';
@@ -17,11 +18,21 @@ export const EcoPulseQuiz = () => {
   const [submitted, setSubmitted] = useState(false);
   const [loading, setLoading] = useState(false);
   const [quizStats, setQuizStats] = useState(null);
+  const [selectedQuiz, setSelectedQuiz] = useState(null);
 
-  const startQuiz = () => {
+  const startQuiz = (quizType) => {
     if (name.trim()) {
+      setSelectedQuiz(quizType);
       setShowIntro(false);
     }
+  };
+
+  // Filter questions based on selected quiz type
+  const getCurrentQuestions = () => {
+    if (!selectedQuiz) return quizQuestions;
+    return quizQuestions.filter(question => 
+      question.category.split('.')[0] === selectedQuiz
+    );
   };
 
   const calculateScore = () => {
@@ -33,7 +44,9 @@ export const EcoPulseQuiz = () => {
       const newAnswers = { ...answers, [currentQuestion]: score };
       setAnswers(newAnswers);
       
-      if (currentQuestion < quizQuestions.length - 1) {
+      const currentQuestions = getCurrentQuestions();
+      
+      if (currentQuestion < currentQuestions.length - 1) {
         setCurrentQuestion(currentQuestion + 1);
       } else {
         setLoading(true);
@@ -45,12 +58,10 @@ export const EcoPulseQuiz = () => {
       }
     } catch (error) {
       console.error('Error calculating results:', error);
-      setLoading(false); // Make sure to turn off loading state if there's an error
-      // Optionally show an error message to the user
+      setLoading(false);
     }
   };
 
-  // Add error handling for loading state
   if (loading) {
     return (
       <Card className="w-full max-w-2xl mx-auto">
@@ -94,15 +105,24 @@ export const EcoPulseQuiz = () => {
   }
 
   if (showIntro) {
-    return <IntroScreen onStart={startQuiz} setName={setName} />;
+    return <IntroScreen 
+      onStart={startQuiz} 
+      setName={setName}
+    />;
   }
 
+  const currentQuestions = getCurrentQuestions();
   return (
     <QuizQuestion
-      question={quizQuestions[currentQuestion]}
+      question={currentQuestions[currentQuestion]}
       currentQuestion={currentQuestion}
-      totalQuestions={quizQuestions.length}
+      totalQuestions={currentQuestions.length}
       onAnswer={handleAnswer}
+      onBack={() => {
+        setShowIntro(true);
+        setSelectedQuiz(null);
+        setCurrentQuestion(0);
+      }}
     />
   );
 };
