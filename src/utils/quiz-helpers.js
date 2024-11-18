@@ -6,16 +6,24 @@ export const handleRetakeQuiz = (
   setCurrentQuestion,
   setAnswers,
   startQuiz,
-  category
+  category,
+  answers,
+  quizQuestions
 ) => {
-  setShowResults(false);
-  setShowIntro(true);
-  setCurrentQuestion(0);
-  setAnswers({});
   if (category) {
-    // If a specific category was selected, start that quiz immediately
+    // Clear only answers from the selected category
+    const newAnswers = { ...answers };
+    quizQuestions.forEach(question => {
+      if (question.category.split('.')[0] === category) {
+        delete newAnswers[question.id - 1];
+      }
+    });
+    setAnswers(newAnswers);
     startQuiz(category);
   }
+  setShowResults(false);
+  setShowIntro(category ? false : true);
+  setCurrentQuestion(0);
 };
 
 // Add this near the top of your quiz-helpers.js file
