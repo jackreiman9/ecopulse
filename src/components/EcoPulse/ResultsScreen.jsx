@@ -16,7 +16,7 @@ export const ResultsScreen = ({
   setEmail,
   quizStats,
   onSubmit,
-  onRetakeQuiz, // new prop for handling navigation
+  onRetakeQuiz,
 }) => {
   const currentTier = tiers.find(tier => score >= tier.minScore) || tiers[tiers.length - 1];
   const recommendations = getRecommendations(answers);
@@ -27,6 +27,13 @@ export const ResultsScreen = ({
     transportation: '🚗',
     packaging: '🗑️',
     clothing: '🛒'
+  };
+
+  const categoryDisplayNames = {
+    food: 'Food',
+    transportation: 'Transportation',
+    packaging: 'Waste',
+    clothing: 'Consumer/Retail'
   };
 
   return (
@@ -46,7 +53,6 @@ export const ResultsScreen = ({
           )}
         </div>
 
-        {/* Category Breakdown - Now Clickable */}
         <div className="mb-8">
           <h3 className="text-xl font-bold mb-4">Category Breakdown</h3>
           <div className="space-y-3">
@@ -60,8 +66,8 @@ export const ResultsScreen = ({
                 <div className="flex items-center gap-3">
                   <span className="text-2xl">{categoryIcons[category]}</span>
                   <div className="text-left">
-                    <p className="font-semibold capitalize">
-                      {category}
+                    <p className="font-semibold">
+                      {categoryDisplayNames[category]}
                     </p>
                     <p className="text-sm text-gray-600">
                       Score: {categoryScore}
@@ -76,7 +82,6 @@ export const ResultsScreen = ({
             ))}
           </div>
           
-          {/* Add a button to return to all categories */}
           <Button
             onClick={() => onRetakeQuiz(null)}
             className="w-full mt-4 bg-green-100 text-green-700 hover:bg-green-200"
