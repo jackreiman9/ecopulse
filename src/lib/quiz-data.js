@@ -2,6 +2,7 @@ export const quizQuestions = [
   {
     id: 1,
     question: "How often do you eat plant-based meals?",
+    category: "food purchasing",
     options: [
       { text: "Always", score: 2 },
       { text: "Frequently", score: 1 },
@@ -15,6 +16,7 @@ export const quizQuestions = [
   {
     id: 2,
     question: "How often do you buy local produce?",
+    category: "food purchasing",
     options: [
       { text: "Always", score: 2 },
       { text: "Frequently", score: 1 },
@@ -28,6 +30,7 @@ export const quizQuestions = [
   {
     id: 3,
     question: "How often do you consider ingredient sourcing when buying food?",
+    category: "food purchasing",
     options: [
       { text: "Always", score: 2 },
       { text: "Frequently", score: 1 },
@@ -36,11 +39,12 @@ export const quizQuestions = [
       { text: "Never", score: -2 },
       { text: "Not Sure", score: 0}
     ],
-    impact: "high"
+    impact: "medium"
   },
   {
     id: 4,
     question: "How often do you compost your food waste?",
+    category: "waste",
     options: [
       { text: "Always", score: 2 },
       { text: "Frequently", score: 1 },
@@ -54,6 +58,7 @@ export const quizQuestions = [
   {
     id: 5,
     question: "How often do you purchase beverages in single-use packaging?",
+    category: "waste",
     options: [
       { text: "Always", score: 2 },
       { text: "Frequently", score: 1 },
@@ -67,6 +72,7 @@ export const quizQuestions = [
   {
     id: 6,
     question: "How often do you use a reusable waterbottle?",
+    category: "waste",
     options: [
       { text: "Always", score: 2 },
       { text: "Frequently", score: 1 },
@@ -80,6 +86,7 @@ export const quizQuestions = [
   {
     id: 7,
     question: "I actively try to reduce my single use plastic consumption",
+    category: "waste",
     options: [
       { text: "Strongly Agree", score: 2 },
       { text: "Somewhat Agree", score: 1 },
@@ -93,6 +100,7 @@ export const quizQuestions = [
   {
     id: 8,
     question: "How often do you recycle your plastic waste?",
+    category: "waste",
     options: [
             { text: "Always", score: 2 },
       { text: "Frequently", score: 1 },
@@ -105,6 +113,7 @@ export const quizQuestions = [
   {
     id: 9,
     question: "How often do you take public transportation?",
+    category: "transportation",
     options: [
       { text: "Always", score: 2 },
       { text: "Frequently", score: 1 },
@@ -118,6 +127,7 @@ export const quizQuestions = [
   {
     id: 10,
     question: "How often do you bike instead of taking a car?",
+    category: "transportation",
     options: [
       { text: "Always", score: 2 },
       { text: "Frequently", score: 1 },
@@ -131,6 +141,7 @@ export const quizQuestions = [
   {
     id: 11,
     question: "How often do you take the stairs instead of the elevator?",
+    category: "transportation",
     options: [
       { text: "Always", score: 2 },
       { text: "Frequently", score: 1 },
@@ -144,6 +155,7 @@ export const quizQuestions = [
   {
     id: 12,
     question: "How often do you consider emissions or energy use when choosing transportation options?",
+    category: "transportation",
     options: [
       { text: "Always", score: 2 },
       { text: "Frequently", score: 1 },
@@ -156,6 +168,7 @@ export const quizQuestions = [
   {
     id: 13,
     question: "How often do you purchase new clothes?",
+    category: "clothing",
     options: [
       { text: "Weekly", score: -2 },
       { text: "Monthly", score: -1 },
@@ -168,6 +181,7 @@ export const quizQuestions = [
   {
     id: 14,
     question: "How often do you shop secondhand/thrift for clothing?",
+    category: "clothing",
     options: [
       { text: "Always", score: 2 },
       { text: "Frequently", score: 1 },
@@ -180,25 +194,27 @@ export const quizQuestions = [
   {
     id: 15,
     question: "How important is ethical sourcing and manufacturing to you when buying from a brand?",
+    category: "clothing",
     options: [
       { text: "Very Important", score: 2 },
       { text: "Somewhat Important", score: 1 },
       { text: "Somewhat Unimportant", score: -1 },
       { text: "Very Unimportant", score: -2 }
     ],
-    impact: "high"
+    impact: "medium"
   },
   {
     id: 16,
-    question: "How often do you consider emissions or energy use when choosing transportation options?",
+    question: "What do you do with clothes when you don't want to wear them anymore?",
+    category: "clothing",
     options: [
-      { text: "Always", score: 2 },
-      { text: "Frequently", score: 1 },
-      { text: "Sometimes", score: 0 },
-      { text: "Rarely", score: -1 },
-      { text: "Never", score: -2 }
+      { text: "Donate them", score: 2 },
+      { text: "Sell them", score: 1 },
+      { text: "Recylce them", score: 1 },
+      { text: "Keep them", score: 0 },
+      { text: "Thow them in the garbage", score: -2 }
     ],
-    impact: "high"
+    impact: "medium"
   }
 ];
 
